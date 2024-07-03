@@ -5,19 +5,22 @@ import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
-
+import Header1 from "./Components/Header1";
 const App = () => {
   return <Router>
+    <Header1/>
+    
    <Routes>
+
    <Route path="/"  element={<Home/>}/> 
-   <Route path="/Login"  element={<Login/>}/>
+   <Route path="/SignIn"  element={<Login/>}/>
    <Route path="/signup"  element={<SignUp/>}/> 
-   <Route path="/profile"  element={<Profile/>}/> 
-   <Route path="/about"  element={<About/>}/> 
+   <Route path="/Profile"  element={<Profile/>}/> 
+   <Route path="/About"  element={<About/>}/> 
 
    </Routes>
   </Router>;
-  
+
 };
 
 export default App;
