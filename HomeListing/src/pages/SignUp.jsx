@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {Navigate, useNavigate} from 'react-router-dom';
 //Main color #b37300
 
 
@@ -7,7 +8,7 @@ function SignUp() {
   const [formData, setFormData]=useState({});
   const [loading , setLoading]=useState(false);
   const [error, setError]=useState("");
-
+  const navigate=useNavigate();
   function onInputChange(e){
     setFormData({
       ...formData, 
@@ -58,11 +59,12 @@ function SignUp() {
     if(data.Completed==='False'){
       console.log("error handled");
       console.log(data.message);
-      setError(data.message.errorResponse.errmsg || "Some error occured");
+      setError(data.message || "Some error occured");
       setLoading(false);
       return ;
     }
     setLoading(false);
+    navigate("/signin");
 
   }
   catch(err){
