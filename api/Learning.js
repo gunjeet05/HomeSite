@@ -22,3 +22,70 @@
 * 
  * 
  */
+
+import { set } from "mongoose";
+
+
+/**
+ * Learning promises and async await
+ * We can handle aysnchronous operations using callback functions and promises
+ */
+//Using callback 
+
+// function func1(callback){
+    
+//     setTimeout(() => {
+//         let data ="Data 2";
+//         callback(data);
+        
+//     }, 2000);
+
+   
+
+
+// }
+
+
+// function func2(data){
+//     console.log("data", data);
+// }
+
+// func1(func2);
+
+/**
+ * Issues due to callback 
+ * Callback hell 
+ * 
+ */
+
+/**
+ * 
+ * 
+ * Promises are better way of handling asynchronous operations 
+ * Promises are object which store completion, failure of operations 
+ * 
+ * 
+ */
+
+
+/**
+ * Async await are built on top of Promises
+ * Serial and parallel execution of something 
+ * Await means next line of function will not run all other thing outside function will run.
+ * 
+ * 
+ */
+
+
+function function2() {
+    setTimeout(() => {
+      console.log("Gunjeet");
+    }, 2990);
+  }
+  
+  const function1 = async (name) => {
+    await new Promise(resolve => setTimeout(resolve, 2990));
+    console.log("Running");
+  };
+
+  function1("")
