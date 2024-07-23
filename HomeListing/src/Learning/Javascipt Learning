@@ -1,0 +1,7 @@
+Learning of 21 july
+1.how to use jwt for authentication 
+2.Improved middleware knowledge
+
+
+
+Important-if will pass something to setState other then state variable then it will throw an error

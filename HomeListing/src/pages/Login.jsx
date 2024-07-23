@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 //Main color #b37300
-
-
+import {useSelector, useDispatch} from 'react-redux';
+import {signinStart,signinFail,signinSuccess} from '../redux/user/userSlice.js'
 function Login() {
 
   const [formData, setFormData]=useState({});
-  const [loading , setLoading]=useState(false);
-  const [error, setError]=useState("");
-
+  const {loading, error}=useSelector((state)=>state.user);
+  const dispatch=useDispatch();
   function onInputChange(e){
-    setError("");
+    //setError("");
     setFormData({
       ...formData, 
       [e.target.name]:e.target.value,
@@ -35,14 +34,16 @@ function Login() {
     
     e.preventDefault();
     try{
-      setError("");
+      // setError("");
+      // setLoading(true);
+      dispatch(signinStart());
       if(!validate()){
         //console.log("Missing data handled")
         setError("Somefield is missing");
         return;
       }
       
-      setLoading(true);
+      
 
       
     const res=await fetch("api/signin", {
@@ -58,19 +59,20 @@ function Login() {
 
     if(data.Completed==='False'){
       console.log("error handled");
-      console.log("dataMessage--",data.message);
-      setError(data.message || "Some error occured");
-      setLoading(false);
+      console.log("dataMessage--",data);
+      dispatch(signinFail(data.message))
+      // setError(data.message || "Some error occured");
+      // setLoading(false);
       return ;
     }
-    setLoading(false);
+    dispatch(signinSuccess());
 
   }
   catch(err){
     console.log(err);
-    setError(err || "Some error occured");
-
-    setLoading(false);
+    // setError(err || "Some error occured");
+    //setLoading(false);
+    dispatch(signinFail(err));
     
   }
 }
