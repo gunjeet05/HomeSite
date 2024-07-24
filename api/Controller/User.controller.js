@@ -60,3 +60,31 @@ catch(err){
 //     newUser.save();
 
 // }
+
+export const googleLogin=async (req, res, next)=>{
+    const {username, email, photo}=req.body;
+    try{
+    const user=await User.findOne({email});
+        if(!user){
+        const newUser=new User({
+            username:username.split(" ").join("").toLowerCase(), 
+            email:email, 
+            password:Math.random().toString(36).slice(-8),
+            picture:photo
+        })
+        const user1=await newUser.save();
+        const token=jwt.sign({user:user1._id}, process.env.secret, {"expiresIn":"1h"});
+        const {password:pass2, ...restofThings}=user1._doc;
+        res.cookie("token",token,{httpOnly:true}).status(200).json(restofThings);
+    }
+    else{
+        const token=jwt.sign({user:user._id}, process.env.secret, {"expiresIn":"1h"});
+        const {password:pass2, ...restofThings}=user._doc;
+        res.cookie("token",token,{httpOnly:true}).status(200).json(restofThings);
+
+    }
+}   catch(err){
+    next(err);
+}
+    
+}

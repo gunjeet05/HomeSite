@@ -1,0 +1,10 @@
+How to make a private route
+To make a private route we can use a parent component where we can pass Outlet outlet is used to call the child 
+Outlet in react is a placeholder component  which can be replaced by its child component;
+
+
+Today's learning 
+1.Outlet is replaced by child route in case of nested route
+2.Using nested route we can make protected route
+3.Navigate is a component while useComponent is hook which return a method
+4.We have link which is used for client side rendering it navigate between the page without reloading the page

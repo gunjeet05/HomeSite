@@ -16,18 +16,22 @@ const userSlice=createSlice({
     reducers:{
         signinStart:(state)=>{
             state.loading=true;
+            state.error=null;
         },
         signinFail:(state, action)=>{
-            console.log("Payload from reducer when fail", action)
+            console.log("Payload from reducer when fail", action.payload)
             state.loading=false;
             state.error=action.payload;
             
         },
         signinSuccess:(state, action)=>{
-            console.log("Payload from reducer", action)
+            console.log("Payload from reducer", action);
             state.currentUser=action.payload;
             state.error=null;
             state.loading=false;
+        },
+        fieldChange:(state)=>{
+            state.error=null;
         }
     }
 })
@@ -36,7 +40,8 @@ const userSlice=createSlice({
 export const {
     signinFail, 
     signinStart, 
-    signinSuccess
+    signinSuccess,
+    fieldChange
 }=userSlice.actions;
 
 export default userSlice.reducer;
