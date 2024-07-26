@@ -5,6 +5,7 @@ import mongoose, { mongo } from 'mongoose';
 import Router from './Route/User.route.js';
 import authRoute from "./Route/User.auth.js";
 import errorHandler from './MiddleWare/ErrorHandler.js';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const mongodb=process.env.MONGO;
@@ -19,7 +20,7 @@ mongoose.connect(mongodb).then(()=>{
 
 const app=express();
 app.use(express.json());
-
+app.use(cookieParser());
 
 
 

@@ -32,7 +32,29 @@ const userSlice=createSlice({
         },
         fieldChange:(state)=>{
             state.error=null;
+            state.loading=false;
+        },
+        updateStart:(state)=>{
+            state.loading=true;
+            state.error=null;
+            
+
+        }, 
+        updateError:(state, action)=>{
+            state.loading=false;
+            state.error=action.payload;
+
+            
+        }, 
+        updateSuccess:(state, action)=>{
+            state.loading=false;
+            state.error=null;
+            state.currentUser=action.payload;
         }
+
+
+
+
     }
 })
 
@@ -41,7 +63,10 @@ export const {
     signinFail, 
     signinStart, 
     signinSuccess,
-    fieldChange
+    fieldChange,
+    updateError, 
+    updateStart, 
+    updateSuccess,
 }=userSlice.actions;
 
 export default userSlice.reducer;

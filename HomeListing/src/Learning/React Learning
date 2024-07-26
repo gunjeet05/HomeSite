@@ -8,3 +8,18 @@ Today's learning
 2.Using nested route we can make protected route
 3.Navigate is a component while useComponent is hook which return a method
 4.We have link which is used for client side rendering it navigate between the page without reloading the page
+
+
+
+Learning 25th july 2024
+Today I learnt how to upload something on firebase
+
+1.Set up the firebase .js
+2.getStorage method from firebase
+3.In order to upload image we need to do following things 
+  1.Set up the storageRef we will get this using ref method which accept storage and file name 
+  2.Next method we will use is uploadBytesResumable
+  3.It will return the object which have property snapshot and a method on 
+  4.onMethod in getBytesResumable have following 4 callback on(event, next, err, complete)
+  event can have 4 values state_changed, success ,error , complete
+  5.from complete we can get the download URL 

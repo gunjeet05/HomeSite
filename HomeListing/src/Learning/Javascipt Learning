@@ -8,3 +8,7 @@ Important-if will pass something to setState other then state variable then it w
 
 
 
+26th july 
+Today I have to update a user using a route 
+A strange thing happened that we don't need to pass the cookie while making the req it is always there
+

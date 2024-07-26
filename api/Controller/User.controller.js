@@ -40,7 +40,7 @@ export const signin=async (req, res, next)=>{
     
     )
     const {password:pass2, ...restofThings}=user._doc;
-    res.cookie("userToken",token,{httpOnly:true}).status(200).json(restofThings);
+    res.cookie("token",token,{httpOnly:true}).status(200).json(restofThings);
 }
 catch(err){
     next(err);
@@ -87,4 +87,46 @@ export const googleLogin=async (req, res, next)=>{
     next(err);
 }
     
+}
+
+
+
+export const updateUser=async (req, res, next)=>{
+   try{
+    const userid=req.user.user|| req.user.user_id;
+    console.log("userid", userid);
+    if(userid!==req.params.id){
+        return next(new Error(`You can change your profile only ${req.user.user_id} ${req.params.id}`));
+
+    }
+
+    
+    console.log("Backend reqbody", req.body);
+    if(req.body.password){
+        req.body.password=bcrypt.hashSync(req.body.password, 10);
+    }
+    const newuser=await User.findByIdAndUpdate(req.params.id, 
+        {$set:{
+            username:req.body.username, 
+            password:req.body.password, 
+            email:req.body.email, 
+            picture:req.body.picture, 
+        }
+    }, 
+    {new:true}
+    )
+    
+    const {password , ...rest}=newuser._doc;
+    res.status(200).json(rest);
+
+    
+    
+}
+    catch(err){
+        next(err);
+    }
+
+
+   
+
 }
