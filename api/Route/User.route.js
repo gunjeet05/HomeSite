@@ -1,7 +1,7 @@
 //name to test .
 
 import express from "express";
-import { user, signin, googleLogin, updateUser } from "../Controller/User.controller.js";
+import { user, signin, googleLogin, updateUser, deleteUser, signOut } from "../Controller/User.controller.js";
 import User from "../Model/User.js";
 import jwt from "jsonwebtoken";
 const Router=express.Router();
@@ -20,6 +20,8 @@ Router.post("/signin",signin);
 
 Router.post("/googlelogin",googleLogin );
 Router.post("/updateUser/:id", verifyToken, updateUser);
+Router.delete("/deleteUser/:id", verifyToken,deleteUser )
+Router.post("/signOut", signOut)
 
 
 export default Router;

@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Header1 from "./Components/Header1";
 import PrivateRoute from "./pages/PrivateRoute";
+import Listing from "./pages/Listing";
 const App = () => {
   return <Router>
     <Header1/>
@@ -18,6 +19,7 @@ const App = () => {
    <Route path="/signup"  element={<SignUp/>}/> 
    <Route element={<PrivateRoute />}>
     <Route path="/profile" element={<Profile/>}/>
+    <Route path="/listing" element={<Listing/>}/>
     </Route>
    
   

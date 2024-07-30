@@ -6,6 +6,7 @@ import Router from './Route/User.route.js';
 import authRoute from "./Route/User.auth.js";
 import errorHandler from './MiddleWare/ErrorHandler.js';
 import cookieParser from 'cookie-parser';
+import Router3 from "./Route/User.listing.js"
 dotenv.config();
 
 const mongodb=process.env.MONGO;
@@ -26,7 +27,7 @@ app.use(cookieParser());
 
 app.use( "/api", Router)
 app.use("/api", authRoute);
-
+app.use("/api",Router3);
 app.use(Router);
 app.use(errorHandler);
 

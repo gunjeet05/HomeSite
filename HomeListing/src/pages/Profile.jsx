@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import {useSelector} from "react-redux"
 import {storage} from '../firebase.js'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import {updateError, updateStart, updateSuccess} from '../redux/user/userSlice.js'
+import {updateError, updateStart, updateSuccess, deleteFail, deleteStart, deleteSuccess} from '../redux/user/userSlice.js'
 //
 import { useDispatch } from 'react-redux';
 
@@ -109,6 +109,49 @@ function Profile() {
       })
       console.log(formData);
   }
+
+  const handleDelete=async ()=>{
+    dispath(deleteStart());
+    try{
+    const res=await fetch(`/api/deleteUser/${currentUser._id}`, {
+      method:"DELETE",
+      headers:{
+        "Content-type":"application/json", 
+
+      } 
+      
+
+    })
+    const data=await res.json();
+    console.log(data);
+    if(data.Completed==='False'){
+     
+      dispath(deleteFail(res.message));
+      return ;
+    }
+   
+    dispath(deleteSuccess());
+
+  }
+  catch(err){
+    console.log(err);
+    
+    dispath(deleteFail(err));
+
+  }
+}
+
+const handleSignout=async ()=>{
+  try{
+    await fetch("/api/signout");
+    dispath(deleteSuccess());
+
+  }
+  catch(err){
+    console.log("Error in Signout", err);
+  }
+}
+
   
 
   console.log("CurrentUSer in profile", currentUser);
@@ -128,8 +171,8 @@ function Profile() {
         <button onClick={handleClick} className='bg-green-800 text-white p-2 rounded-lg mt-1 hover:bg-green-700'> Update changes</button>
       </form>
       <div className='flex justify-around w-9/12 md:w-10/12' >
-        <span className='text-red-600 '>Delete Account</span>
-        <span>Sign Out</span>
+        <span className='text-red-600 ' onClick={handleDelete}>Delete Account</span>
+        <span  className='text-red-600 ' onClick={handleSignout} >Sign Out</span>
       </div>
     </div>
   )

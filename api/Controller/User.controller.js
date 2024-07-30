@@ -119,6 +119,7 @@ export const updateUser=async (req, res, next)=>{
     const {password , ...rest}=newuser._doc;
     res.status(200).json(rest);
 
+
     
     
 }
@@ -130,3 +131,36 @@ export const updateUser=async (req, res, next)=>{
    
 
 }
+
+
+export const deleteUser=async(req, res, next)=>{
+
+    try{
+        const userid=req.user.user|| req.user.user_id;
+        if(req.params.id!==userid){
+            return next(new Error("You can deleter your id only"));
+        }
+
+        await User.findByIdAndDelete(req.params.id);
+        res.clear
+        return res.clearCookie("token").status(200).json({"message":"Deleted Successfully"});
+    }
+    catch(err){
+        next(err);
+
+    }
+}
+
+
+export const signOut=(req, res, next)=>{
+    try{
+        res.clearCookie("token");
+        res.json({
+            "message":"Sign Out Successfully"
+        })
+    }
+    catch{
+        next(err);
+    }
+}
+    
