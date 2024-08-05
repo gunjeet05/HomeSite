@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import {storage} from "../firebase.js"
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 
-const Listing = () => {
+
+const UpdateListing = () => {
+   
 
   const[error, setError]=useState("");
   const [file, setFile]=useState([]);
@@ -25,13 +28,15 @@ const Listing = () => {
     "userRef":currentUser._id, 
   })
 
+  const {id}=useParams();
+
   console.log(currentUser._id);
   const [errorWhileUploading, setErrorWhileUploading]=useState(false);
   const[uploading, setUploading]=useState(false);
 
-  useEffect(()=>{
-    console.log("formData",formData);
-  },[formData])
+  // useEffect(()=>{
+  //   console.log("formData",formData);
+  // },[formData])
 
   // console.log("file", file);
   // console.log("formData", formData);
@@ -134,7 +139,8 @@ const deleteImage=(index)=>{
     "image":formData.image.filter((val, ind)=>ind!==index),
   })
   
-  console.log(formData.image.length)
+  console.log(formData.image.length);
+  
 
 }
 
@@ -154,7 +160,11 @@ const handleChange=(e)=>{
       ...formData, 
       "type":e.target.id,
     })
+
+
   }
+
+  if(e.target.id)
 
   if(e.target.id==="parking"||e.target.id==="furnished"|| e.target.id==="offer"){
     console.log("parking")
@@ -200,14 +210,59 @@ const sendData=async (e)=>{
 
 }
 
+const getData=async()=>{
+    const res=await fetch(`/api/getData/${id}`, {
+        method:"GET", 
+        headers:{
+            "Content-Type":"application/json",
+        }
+       
+
+
+    }
+    
+
+)
+
+const data=await res.json();
+if(data.completeted==="false"){
+    setError(data.message);
+    return ;
+
+}
+else{
+    setFormData(data);
+    
+}
+
+}
+useEffect(()=>{
+    getData();
+    
+},[])
+
+const updateData=async(e)=>{
+    e.preventDefault()
+    const res=await fetch(`/api/updateListing/${id}`, {
+        method:"POST", 
+        headers:{
+            "Content-type":"application/json"
+        },
+        body:JSON.stringify(formData)
+    })
+    const data=await res.json();
+    console.log("Data recieved while updating the listing", data);
+}
+
+
   return (
     <div className='flex flex-col justify-center items-center p-4 font-semibold h-100%'>
-      <h2 className='text-3xl'>Create a listing</h2>
+      <h2 className='text-3xl'>Update a listing</h2>
       <form className='grid grid-cols-2 w-9/12 p-6 '>
         <div className='flex flex-col gap-y-3 w-9/12 text-'>
-            <input type="text" className='border-2 border-slate-600 rounded-lg p-2' maxLength={20} placeholder='name' onChange={handleChange} id='name'/>
-            <textarea type="text" minLength={10} maxLength={100} required className='border-2 border-slate-600 p-2 rounded-lg' placeholder='description' id='description' onChange={handleChange} />
-            <input type="text" className='border-2 border-slate-600 rounded-lg p-2' maxLength={20} placeholder='address' onChange={handleChange} id='address'/>
+            <input type="text" className='border-2 border-slate-600 rounded-lg p-2' maxLength={20} placeholder='name' onChange={handleChange} id='name' defaultValue={formData.name}/>
+            <textarea type="text" minLength={10} maxLength={100} required className='border-2 border-slate-600 p-2 rounded-lg' placeholder='description' id='description' onChange={handleChange} defaultValue={formData.description}/>
+            <input type="text" className='border-2 border-slate-600 rounded-lg p-2' maxLength={20} placeholder='address' onChange={handleChange} id='address' defaultValue={formData.address}/>
 
             <div className='flex flex-wrap text-lg gap-x-3 font-normal'>
             
@@ -220,15 +275,15 @@ const sendData=async (e)=>{
             <span>Rent</span>
             </div>
             <div >
-            <input type="checkbox" id='parking' onChange={handleChange} />
+            <input type="checkbox" id='parking' onChange={handleChange} checked={formData.parking} />
             <span>Parking Spot</span>
             </div>
             <div >
-            <input type="checkbox" id='furnished' onChange={handleChange} />
+            <input type="checkbox" id='furnished' onChange={handleChange} checked={formData.furnished}  />
             <span>Furnised</span>
             </div>
             <div >
-            <input type="checkbox" id='offer' onChange={handleChange}/>
+            <input type="checkbox" id='offer' onChange={handleChange}  checked={formData.offer} />
             <span>discount</span>
             </div>
             </div>
@@ -238,18 +293,18 @@ const sendData=async (e)=>{
 
             <div className='flex justify-between'>
             <span>Bed</span>
-            <input type="number"  className='border-2 border-slate-600 w-9/12 rounded-lg px-2' id='bed' onChange={handleChange}/>
+            <input type="number"  className='border-2 border-slate-600 w-9/12 rounded-lg px-2' id='bed' onChange={handleChange} defaultValue={formData.bedroom}/>
             </div>
 
 
             <div className='flex justify-between'>
             <span>Bath</span>
-            <input type="number"  className='border-2 border-slate-600 w-9/12 rounded-lg px-2' id='bath' onChange={handleChange}/>
+            <input type="number"  className='border-2 border-slate-600 w-9/12 rounded-lg px-2' id='bath' onChange={handleChange} defaultValue={formData.bathroom}/>
             
             </div>
             <div className='flex justify-between'>
             <span>Price</span>
-            <input type="number"  className='border-2 border-slate-600  w-9/12 rounded-lg px-2' id='price' onChange={handleChange}/>
+            <input type="number"  className='border-2 border-slate-600  w-9/12 rounded-lg px-2' id='price' onChange={handleChange} defaultValue={formData.regularPrice}/>
            
             </div>
             </div>
@@ -265,10 +320,10 @@ const sendData=async (e)=>{
            </div>
             <div className='flex items-center justify-between'>
            <input className='w-8/12 border-2 border-slate-200 p-2' type="file" accept='image/*' onChange={handleFileChange} multiple/>
-           <button type="button" className='border-2 border-green-400 p-3 rounded-lg' onClick={handleSubmit}>{uploading? "Uploading...":"Upload"}</button>
+           <button type="button" className='border-2 border-green-400 p-3 rounded-md' onClick={handleSubmit}>{uploading? "Uploading...":"Upload"}</button>
            </div>
 
-           <button  className='mt-6 w-full self-center text-white bg-mainColor p-2 rounded-lg text-lg ' onClick={sendData}>Create Listing</button>
+           <button  className='mt-6 w-full self-center text-white bg-mainColor p-2 rounded-lg text-lg ' onClick={updateData}>Update Listing</button>
            <div className='flex flex-col gap-2'>
            {formData.image.length>0 && formData.image.map((val,ind)=>{
            
@@ -287,4 +342,4 @@ const sendData=async (e)=>{
   )
 }
 
-export default Listing
+export default UpdateListing;

@@ -1,14 +1,67 @@
-Learning of 21 july
-1.how to use jwt for authentication 
-2.Improved middleware knowledge
+// Learning of 21 july
+// 1.how to use jwt for authentication 
+// 2.Improved middleware knowledge
 
 
 
-Important-if will pass something to setState other then state variable then it will throw an error
+// Important-if will pass something to setState other then state variable then it will throw an error
 
 
 
-26th july 
-Today I have to update a user using a route 
-A strange thing happened that we don't need to pass the cookie while making the req it is always there
+// 26th july 
+// Today I have to update a user using a route 
+// A strange thing happened that we don't need to pass the cookie while making the req it is always there
 
+
+
+// Callback and promises
+// Callback are the function which are passed to another function . Caller function will use it any way it wants to.
+// They are used for sync and async operations 
+// Multiple callback function leads to callback hell 
+// That's we use promise 
+
+
+// Callback 
+
+// function function1(function2){
+//     setTimeout(()=>{
+//         function2("hello");
+//     }, 1000)
+// }
+
+
+// funtion2=(func)=>{
+//     func("data");
+// }
+
+// func=(a)=>{
+//     console.log(a);
+// }
+
+
+// function DoSomething(callback){
+//     callback("First");  //here we are just using the callback
+// }
+
+// function doSomething("Value", callback){
+//     console.log(Value);
+//     callback("second");
+
+// }
+
+
+// function doThirdThing(value, callback){
+//     console.log(value);
+//     callback(value);
+
+// }
+
+
+
+// doSoemthing((first)=>{ //here we are defining the callback function 
+//     doSomethingElse(first, (sec)=>{
+//         doThirdThing(sec, ()=>{
+
+//         });
+//     })
+// })
